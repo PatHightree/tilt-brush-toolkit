@@ -1,2 +1,11 @@
 *.pyc
 *.DS_Store
+UnitySDK/Assets/SpaceNavigator/
+
+UnitySDK/.idea/.idea.UnitySDK/.idea/
+
+UnitySDK/Assets/SpaceNavigator.meta
+
+UnitySDK/Assets/Plugins/
+
+UnitySDK/Assets/Plugins.meta
