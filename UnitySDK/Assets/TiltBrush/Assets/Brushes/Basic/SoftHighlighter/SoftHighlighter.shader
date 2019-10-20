@@ -15,6 +15,7 @@
 Shader "Brush/Special/SoftHighlighter" {
 Properties {
   _MainTex ("Texture", 2D) = "white" {}
+  _ProximityFade ("Proximity Fade", Range(0,10)) = 10
 }
 
 Category {
@@ -48,9 +49,11 @@ Category {
         float4 vertex : POSITION;
         fixed4 color : COLOR;
         float2 texcoord : TEXCOORD0;
+        float distance : TEXCOORD1;
       };
 
       float4 _MainTex_ST;
+      uniform half _ProximityFade;
 
       v2f vert (appdata_t v)
       {
@@ -67,6 +70,7 @@ Category {
         o.color = TbVertToNative(v.color);
 #endif
         o.vertex = UnityObjectToClipPos(v.vertex);
+        o.distance = UnityObjectToViewPos(v.vertex).z;
 
         return o;
 
@@ -75,6 +79,9 @@ Category {
       fixed4 frag (v2f i) : COLOR
       {
          half4 c = tex2D(_MainTex, i.texcoord );
+        // Do proximity fade
+        i.color.a *= min(-i.distance / _ProximityFade, 1);
+        
         return i.color * c;
       }
       ENDCG
