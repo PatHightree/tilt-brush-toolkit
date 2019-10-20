@@ -16,7 +16,7 @@ Shader "Brush/Special/AdditiveCutout" {
 Properties {
   _MainTex ("Texture", 2D) = "white" {}
   _Cutoff ("Alpha cutoff", Range(0,1)) = 0.5
-    _ProximityFade ("Proximity Fade", Range(0,10)) = 1
+  _ProximityFade ("Proximity Fade", Range(0,10)) = 10
 }
 
 Category {

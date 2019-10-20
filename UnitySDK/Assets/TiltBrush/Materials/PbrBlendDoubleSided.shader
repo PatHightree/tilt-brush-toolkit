@@ -20,7 +20,7 @@ Shader "Poly/PbrBlendDoubleSided" {
     _BaseColorTex ("Base Color Texture", 2D) = "white" {}
     _MetallicFactor ("Metallic Factor", Range(0,1)) = 1.0
     _RoughnessFactor ("Roughness Factor", Range(0,1)) = 1.0
-    _ProximityFade ("Proximity Fade", Range(0,10)) = 1
+    _ProximityFade ("Proximity Fade", Range(0,10)) = 10
   }
   SubShader {
     Cull Off
