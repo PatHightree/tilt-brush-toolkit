@@ -16,7 +16,7 @@ Shader "Brush/Special/AdditiveCutout" {
 Properties {
   _MainTex ("Texture", 2D) = "white" {}
   _Cutoff ("Alpha cutoff", Range(0,1)) = 0.5
-
+    _ProximityFade ("Proximity Fade", Range(0,10)) = 1
 }
 
 Category {
@@ -38,6 +38,8 @@ Category {
 
       sampler2D _MainTex;
       uniform float _Cutoff;
+      uniform half _ProximityFade;
+      
       struct appdata_t {
         float4 vertex : POSITION;
         fixed4 color : COLOR;
@@ -49,6 +51,7 @@ Category {
         float4 vertex : POSITION;
         fixed4 color : COLOR;
         float2 texcoord : TEXCOORD0;
+        float distance : TEXCOORD1;
       };
 
       float4 _MainTex_ST;
@@ -60,6 +63,7 @@ Category {
         o.vertex = UnityObjectToClipPos(v.vertex);
         o.texcoord = TRANSFORM_TEX(v.texcoord,_MainTex);
         o.color = TbVertToNative(v.color);
+        o.distance = UnityObjectToViewPos(v.vertex).z;
         return o;
       }
 
@@ -69,7 +73,9 @@ Category {
 
         // Cutoff the alpha value based on the incoming vertex alpha
         i.color.a = (i.color.a * c.a < _Cutoff) ? 0 : 1;
-
+        // Do proximity fade
+        i.color.a *= min(-i.distance / _ProximityFade, 1);
+        
         return i.color * float4(c.rgb,1);
       }
       ENDCG
