@@ -20,7 +20,7 @@ Shader "Poly/PbrBlendDoubleSided" {
     _BaseColorTex ("Base Color Texture", 2D) = "white" {}
     _MetallicFactor ("Metallic Factor", Range(0,1)) = 1.0
     _RoughnessFactor ("Roughness Factor", Range(0,1)) = 1.0
-    _FadeDistance ("Fade distance", Range(0,10)) = 1
+    _ProximityFade ("Proximity Fade", Range(0,10)) = 1
   }
   SubShader {
     Cull Off
@@ -48,7 +48,7 @@ Shader "Poly/PbrBlendDoubleSided" {
     fixed4 _BaseColorFactor;
     half _MetallicFactor;
     half _RoughnessFactor;
-    half _FadeDistance;
+    half _ProximityFade;
 
     void vert (inout appdata_full v, out Input o) {
         UNITY_INITIALIZE_OUTPUT(Input,o);
@@ -61,7 +61,7 @@ Shader "Poly/PbrBlendDoubleSided" {
       float4 c = tex2D(_BaseColorTex, IN.uv_BaseColorTex) * _BaseColorFactor * IN.color;
       o.Normal = float3(0, 0, IN.vface);
       o.Albedo = c.rgb;
-      o.Alpha = c.a * min(-IN.distance / _FadeDistance, 1);
+      o.Alpha = c.a * min(-IN.distance / _ProximityFade, 1);
       // Metallic and smoothness come from parameters.
       o.Metallic = _MetallicFactor;
       // Smoothness is the opposite of roughness.
